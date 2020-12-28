@@ -3,6 +3,7 @@
 ## Instalation
 
 Prerequisities: webcam, python 3, virtualenv and pip
+
 Python depencies: opencv-python, face-recognition, pyautogui
 
 create virtual enviroment (for GNU/Linux)
