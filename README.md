@@ -25,3 +25,11 @@ Install pip packages:
 ```
 pip install opencv-python face-recognition pyautogui
 ```
+
+Clone repository and run the project:
+
+```
+git clone https://github.com/ondrasouk/face-recognition-project
+cd face-recognition-project
+python main.py
+```
