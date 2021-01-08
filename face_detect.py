@@ -7,11 +7,15 @@ def face_detect(frame):
     # variable init .
     face_locations = []
     face_encodings = []
-    frame = np.array(frame)
-    #frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    # resize frame to 1/4 of original for more FPS
+    frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    # face_recognition uses rgb encoding and opencv uses bgr
+    rgb_frame = frame[:, :, ::-1]
     # Find all the faces and face encodings in the current frame of video
-    face_locations = face_recognition.face_locations(frame)
-    face_encodings = face_recognition.face_encodings(frame, face_locations)
+    # and resize the coordinates to corespond with the original frame size
+    face_locations = np.multiply(face_recognition.face_locations(rgb_frame),4)
+    # face_encodings is very slow. Maybe checking every n frames can be possible.
+    # face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
     if len(face_locations) == 1:
         face_location = face_locations[0]
