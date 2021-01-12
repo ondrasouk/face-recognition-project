@@ -13,7 +13,8 @@ reference_point = []
 while True:
     # Capturing images
     ret, frame = cam.read()
-    # Operations with frame
+    # Mirror webcam
+    frame = cv2.flip(frame, 1)
     # Detecting
     center_face_position, face_position = face_detect(frame)  # detect face position
     if len(face_position) != 0:
