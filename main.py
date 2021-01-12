@@ -4,11 +4,18 @@ import numpy as np
 from face_detect import face_detect
 from draw_tool import draw_rect, draw_point, draw_lines
 from mouse_move import mouse_move
+import pyautogui
 
 cam = cv2.VideoCapture(0)
+cam_dim = [cam.get(cv2.CAP_PROP_FRAME_WIDTH), cam.get(cv2.CAP_PROP_FRAME_HEIGHT)]
+
 
 # init reference point coordinates
 reference_point = []
+
+# turn off failsafe (when True cursor hits top-left corner of the screen and program fails)
+pyautogui.FAILSAFE = False
+
 
 while True:
     # Capturing images
@@ -19,7 +26,7 @@ while True:
     center_face_position, face_position = face_detect(frame)  # detect face position
     if len(face_position) != 0:
         if len(reference_point):
-            # ToDo mouse movements
+            mouse_move(reference_point, center_face_position, cam_dim)
             pass
         else:  # Use first face frame as reference
             reference_point = center_face_position
