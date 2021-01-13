@@ -8,6 +8,9 @@ import pyautogui
 import threading
 import time
 
+# replace 60 with target refreshrate (my monitor runs at 60fps)
+MOUSE_MOVE_SLEEP = 1/60
+
 
 class PerpetualTimer:
 
@@ -41,9 +44,9 @@ class PerpetualTimer:
 
 
 if __name__ == '__main__':
-    
+
     def mouse_move_wrap():
-        mouse_move(reference_point, center_face_position, cam_dim)
+        mouse_move(reference_point, center_face_position, cam_dim, thread_mouse.seconds)
 
     cam = cv2.VideoCapture(0)
     global cam_dim
@@ -57,9 +60,10 @@ if __name__ == '__main__':
 
     # turn off failsafe (when True cursor hits top-left corner of the screen and program fails)
     pyautogui.FAILSAFE = False
+    pyautogui.PAUSE = 0
 
-    t = PerpetualTimer(0.01, mouse_move_wrap)
-    t.start()
+    thread_mouse = PerpetualTimer(MOUSE_MOVE_SLEEP, mouse_move_wrap)
+    thread_mouse.start()
 
     while True:
         # Capturing images
@@ -70,7 +74,6 @@ if __name__ == '__main__':
         center_face_position, face_position = face_detect(frame)  # detect face position
         if len(face_position) != 0:
             if len(reference_point):
-                # mouse_move(reference_point, center_face_position, cam_dim)
                 pass
             else:  # Use first face frame as reference
                 reference_point = center_face_position
@@ -99,7 +102,7 @@ if __name__ == '__main__':
                     print("Reference set as:", reference_point)
 
     # Release handle to the webcam
-    t.cancel()
+    thread_mouse.cancel()
     cam.release()
     cv2.destroyAllWindows()
 
