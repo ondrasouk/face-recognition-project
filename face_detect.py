@@ -60,9 +60,35 @@ def show_frame(frame, center_face_position, face_position,reference_point):
         edited_frame = draw_lines(edited_frame, reference_point, center_face_position)  # draw all lines
         edited_frame = draw_rect(edited_frame, face_position)  # mark face
 
+        # preview of face - do corp of face from frame & resize it
+        corp_frame = face_corp(face_position, frame)  # corp face boundary
+        corp_height, corp_width = tuple(corp_frame.shape[1::-1])
+        preview_height = 180  # fix preview window height
+        preview_downscale = preview_height/corp_height  # downscaling factor
+        corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  #resizing
+
+        # combine two frames - main preview & face preview
+        comp_frame = corner_matrix_combine(edited_frame, corp_frame_sized)
+
         # Display the resulting frame
-        cv2.imshow('frame', edited_frame)
+        cv2.imshow('frame', comp_frame)
     else:
         cv2.imshow('frame', frame)
     return reference_point  #TODO reference point as global!
+
+
+def corner_matrix_combine(matA, matB):
+    # Take matrix A and to its corned place matB
+    # Use right bottom corner
+    A_row = len(matA)
+    B_row = len(matB)
+    row_len = len(matB[0])
+
+    for r in range(A_row - B_row, A_row):
+        b_idx = r + B_row - A_row
+        this_row = matA[r]
+        add_row = matB[b_idx]
+        this_row[-row_len:] = add_row[:]
+        matA[r] = this_row
+    return matA
 
