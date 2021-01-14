@@ -45,6 +45,12 @@ class PerpetualTimer:
 
 if __name__ == '__main__':
 
+    # init reference point coordinates
+    global reference_point
+    global center_face_position
+    center_face_position = []
+    reference_point = []
+
     def mouse_move_wrap():
         mouse_move(reference_point, center_face_position, cam_dim, thread_mouse.seconds)
 
@@ -52,11 +58,7 @@ if __name__ == '__main__':
     global cam_dim
     cam_dim = [cam.get(cv2.CAP_PROP_FRAME_WIDTH), cam.get(cv2.CAP_PROP_FRAME_HEIGHT)]
 
-    # init reference point coordinates
-    global reference_point
-    global center_face_position
-    center_face_position = []
-    reference_point = []
+
 
     # turn off failsafe (when True cursor hits top-left corner of the screen and program fails)
     pyautogui.FAILSAFE = False
@@ -71,23 +73,7 @@ if __name__ == '__main__':
         # Mirror webcam
         frame = cv2.flip(frame, 1)
         # Detecting
-        center_face_position, face_position = face_detect(frame)  # detect face position
-        if len(face_position) != 0:
-            if len(reference_point):
-                pass
-            else:  # Use first face frame as reference
-                reference_point = center_face_position
-                print("Reference set as:", reference_point)
-            # Marking in frame
-            edited_frame = draw_point(frame, center_face_position, 0)  # mark face center point
-            edited_frame = draw_point(edited_frame, reference_point, 1)  # mark face center point
-            edited_frame = draw_lines(edited_frame, reference_point, center_face_position)  # draw all lines
-            edited_frame = draw_rect(edited_frame, face_position)  # mark face
-
-            # Display the resulting frame
-            cv2.imshow('frame', edited_frame)
-        else:
-            cv2.imshow('frame', frame)
+        center_face_position, face_position, reference_point = face_detect(frame, reference_point)  # detect face position
 
         # Keystroke detect:
         k = cv2.waitKey(1)
