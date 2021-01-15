@@ -66,6 +66,7 @@ def mouse_move(reference_point, center_face_position, face_position, cam_dim, t)
             mov_y = 0.0
         return 0
 
+
 def move(x, y):
     global mouse_x
     global mouse_y

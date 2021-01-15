@@ -1,8 +1,5 @@
-import face_recognition
 import cv2
-import numpy as np
 from face_detect import face_detect
-from draw_tool import draw_rect, draw_point, draw_lines
 from mouse_move import mouse_move
 import pyautogui
 import threading
