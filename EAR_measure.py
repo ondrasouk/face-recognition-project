@@ -1,6 +1,6 @@
 from scipy.spatial import distance as dist
-from imutils_master.imutils import face_utils
-from imutils_master import imutils
+from imutils import face_utils
+import imutils
 import dlib
 import cv2
 
