@@ -33,3 +33,11 @@ git clone https://github.com/ondrasouk/face-recognition-project
 cd face-recognition-project
 python main.py
 ```
+Module used for EAR  sensing is included in:
+```
+imutils_master
+```
+This new file are pre learned data for analysing face landmarks:
+```
+shape_predictor_68_face_landmarks.dat
+```
