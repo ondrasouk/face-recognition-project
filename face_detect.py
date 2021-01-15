@@ -1,4 +1,3 @@
-
 import face_recognition
 import cv2
 import numpy as np
@@ -7,7 +6,7 @@ from draw_tool import draw_rect, draw_point, draw_lines
 DOWNSCALE_FRAME = 0.25
 
 
-def face_detect(frame, reference_point):  #TODO reference point make as global
+def face_detect(frame, reference_point):  # TODO reference point make as global
     # variable init .
     face_locations = []
     face_encodings = []
@@ -17,7 +16,7 @@ def face_detect(frame, reference_point):  #TODO reference point make as global
     rgb_frame = frame_sized[:, :, ::-1]
     # Find all the faces and face encodings in the current frame of video
     # and resize the coordinates to corespond with the original frame size
-    face_locations = np.multiply(face_recognition.face_locations(rgb_frame),int(1/DOWNSCALE_FRAME))
+    face_locations = np.multiply(face_recognition.face_locations(rgb_frame), int(1 / DOWNSCALE_FRAME))
     # face_encodings is very slow. Maybe checking every n frames can be possible.
     # face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
@@ -28,7 +27,7 @@ def face_detect(frame, reference_point):  #TODO reference point make as global
         center = []
         face_location = []
 
-    reference_point = show_frame(frame, center, face_location, reference_point) # show picture with landmarks
+    reference_point = show_frame(frame, center, face_location, reference_point)  # show picture with landmarks
 
     return center, face_location, reference_point
 
@@ -40,21 +39,23 @@ def center_of_face(position):
     center = (center_x, center_y)
     return center
 
+
 def face_corp(position, frame):
     (top, right, bottom, left) = position
-    width = right-left
+    width = right - left
     height = top - bottom
     crop_img = frame[top:bottom, left:right]
     return crop_img
 
-def show_frame(frame, center_face_position, face_position,reference_point):
+
+def show_frame(frame, center_face_position, face_position, reference_point):
     if len(face_position) != 0:
         if len(reference_point) == 0:
             # Use first face frame as reference
             reference_point = center_face_position
             print("Reference set as:", reference_point)
 
-        # Marking in frame
+        # Marking in frame TODO separe marks from frame
         edited_frame = draw_point(frame, center_face_position, 0)  # mark face center point
         edited_frame = draw_point(edited_frame, reference_point, 1)  # mark face center point
         edited_frame = draw_lines(edited_frame, reference_point, center_face_position)  # draw all lines
@@ -64,8 +65,8 @@ def show_frame(frame, center_face_position, face_position,reference_point):
         corp_frame = face_corp(face_position, frame)  # corp face boundary
         corp_height, corp_width = tuple(corp_frame.shape[1::-1])
         preview_height = 180  # fix preview window height
-        preview_downscale = preview_height/corp_height  # downscaling factor
-        corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  #resizing
+        preview_downscale = preview_height / corp_height  # downscaling factor
+        corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  # resizing
 
         # combine two frames - main preview & face preview
         comp_frame = corner_matrix_combine(edited_frame, corp_frame_sized)
@@ -74,7 +75,7 @@ def show_frame(frame, center_face_position, face_position,reference_point):
         cv2.imshow('frame', comp_frame)
     else:
         cv2.imshow('frame', frame)
-    return reference_point  #TODO reference point as global!
+    return reference_point  # TODO reference point as global!
 
 
 def corner_matrix_combine(matA, matB):
@@ -91,4 +92,3 @@ def corner_matrix_combine(matA, matB):
         this_row[-row_len:] = add_row[:]
         matA[r] = this_row
     return matA
-

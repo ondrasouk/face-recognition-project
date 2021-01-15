@@ -1,4 +1,6 @@
 __pycache__/ 
 .idea/
 env/
+experiments.py/
+imutils-master/
 *.sync-conflict-*
