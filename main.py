@@ -1,6 +1,8 @@
 import cv2
 from face_detect import face_detect
+import dlib
 from mouse_move import mouse_move
+from EAR_measure import ear_init
 import pyautogui
 import threading
 import time
@@ -61,6 +63,10 @@ if __name__ == '__main__':
     # turn off pause in pyautogui
     pyautogui.PAUSE = 0
 
+    # init. of detector and predictor
+    # used for blink detection
+    ear_init()
+
     thread_mouse = PerpetualTimer(MOUSE_MOVE_SLEEP, mouse_move_wrap)
     thread_mouse.start()
 
@@ -82,7 +88,7 @@ if __name__ == '__main__':
             if k == ord('r'):
                 if len(center_face_position) != 0:
                     reference_point = center_face_position
-                    print("Reference set as:", reference_point)
+                    print("[STATE] Reference set as:", reference_point)
 
     # Release handle to the webcam
     thread_mouse.cancel()

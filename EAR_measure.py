@@ -15,25 +15,22 @@ def EAR_meas(frame):
     # Lower EAR than EAR_treshold means that eyes are closed
     EAR_treshold = 0.25
 
-    # INIT:
-    # -----------------------------------------
     # check if inited, if not init
     if not ('detector' in globals()):
         global detector
         global predictor
-        print("[STATE] Detector, predictor init.")
+        print("[STATE] Detector, predictor init while  running")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
-        #todo: Do this init. in the begining of main.py >>  to prevent lag
-    # -----------------------------------------
 
-    frame = imutils.resize(frame, width=450) #TODO resize correction
-    #this is provizor, i know.. nechce mi stim ted s**t,
-    #Check table:
+    frame = imutils.resize(frame, width=450)  # TODO resize correction
+    # this is provizor, i know.. nechce mi stim ted s**t,
+    # Check table:
     #   Dinner
     #   TEA
     #   good  music
     #   ...and   than could  do  it. :)
+
     # transfer to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -43,8 +40,9 @@ def EAR_meas(frame):
     # right eye, respectively
     (lStart, lEnd) = [42, 48]
     (rStart, rEnd) = [36, 42]
+    # TODO maybe can use nose landmak  for  mouse movements
 
-    #init outtput variables
+    # init outtput variables
     avg_ear = 1
     blink = False
     # loop over the face detections
@@ -73,9 +71,17 @@ def EAR_meas(frame):
             blink = True
         else:
             # Opened eyes
-            blink = False# todo: try precision of left/right eye EAR...
+            blink = False
             # for later use (right click, click and hold...)
     return avg_ear, blink
+
+
+def ear_init():
+    global detector
+    global predictor
+    print("[STATE] Detector, predictor init.")
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
 
 def eye_aspect_ratio(eye):
@@ -93,14 +99,3 @@ def eye_aspect_ratio(eye):
 
     # return the eye aspect ratio
     return ear
-
-# some code for  later backup
-# this for marking eyes landmarks to frame..
-'''
-        # compute the convex hull for the left and right eye, then
-        # visualize each of the eyes
-        leftEyeHull = cv2.convexHull(leftEye)
-        rightEyeHull = cv2.convexHull(rightEye)
-        cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
-        cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
-'''
