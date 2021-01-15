@@ -1,8 +1,5 @@
-import face_recognition
 import cv2
-import numpy as np
 from face_detect import face_detect
-from draw_tool import draw_rect, draw_point, draw_lines
 from mouse_move import mouse_move
 import pyautogui
 import threading
@@ -50,18 +47,18 @@ if __name__ == '__main__':
     global center_face_position
     center_face_position = []
     reference_point = []
+    face_position = []
 
     def mouse_move_wrap():
-        mouse_move(reference_point, center_face_position, cam_dim, thread_mouse.seconds)
+        mouse_move(reference_point, center_face_position, face_position, cam_dim, thread_mouse.seconds)
 
     cam = cv2.VideoCapture(0)
     global cam_dim
     cam_dim = [cam.get(cv2.CAP_PROP_FRAME_WIDTH), cam.get(cv2.CAP_PROP_FRAME_HEIGHT)]
 
-
-
     # turn off failsafe (when True cursor hits top-left corner of the screen and program fails)
     pyautogui.FAILSAFE = False
+    # turn off pause in pyautogui
     pyautogui.PAUSE = 0
 
     thread_mouse = PerpetualTimer(MOUSE_MOVE_SLEEP, mouse_move_wrap)

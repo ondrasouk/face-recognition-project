@@ -87,14 +87,5 @@ def show_frame(frame, center_face_position, face_position, reference_point):
 def corner_matrix_combine(matA, matB):
     # Take matrix A and to its corned place matB
     # Use right bottom corner
-    A_row = len(matA)
-    B_row = len(matB)
-    row_len = len(matB[0])
-
-    for r in range(A_row - B_row, A_row):
-        b_idx = r + B_row - A_row
-        this_row = matA[r]
-        add_row = matB[b_idx]
-        this_row[-row_len:] = add_row[:]
-        matA[r] = this_row
+    matA[len(matA)-len(matB):len(matA), len(matA[0])-len(matB[0]):len(matA[0]), ::] = matB
     return matA
