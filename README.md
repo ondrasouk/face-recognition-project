@@ -23,7 +23,7 @@ env\Scripts\activate.bat
 Install pip packages:
 
 ```
-pip install opencv-python face-recognition pyautogui
+pip install opencv-python face-recognition pyautogui imutils scipy
 ```
 
 Clone repository and run the project:
@@ -32,12 +32,4 @@ Clone repository and run the project:
 git clone https://github.com/ondrasouk/face-recognition-project
 cd face-recognition-project
 python main.py
-```
-Module used for EAR  sensing is included in:
-```
-imutils_master
-```
-This new file are pre learned data for analysing face landmarks:
-```
-shape_predictor_68_face_landmarks.dat
 ```
