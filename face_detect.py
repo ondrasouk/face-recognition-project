@@ -1,4 +1,6 @@
 import face_recognition
+from EAR_measure import EAR_meas
+# import EAR_measure
 import cv2
 import numpy as np
 from draw_tool import draw_rect, draw_point, draw_lines
@@ -67,9 +69,13 @@ def show_frame(frame, center_face_position, face_position, reference_point):
         preview_height = 180  # fix preview window height
         preview_downscale = preview_height / corp_height  # downscaling factor
         corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  # resizing
-
+        # do EAR measuring ruttine
+        EAR, blink = EAR_meas(corp_frame_sized)
         # combine two frames - main preview & face preview
         comp_frame = corner_matrix_combine(edited_frame, corp_frame_sized)
+        # text about blink stateq
+        cv2.putText(comp_frame, "Blink:{}".format(blink), (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
         # Display the resulting frame
         cv2.imshow('frame', comp_frame)
