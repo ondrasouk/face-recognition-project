@@ -19,11 +19,16 @@ def face_detect(frame, reference_point):
     if len(face_locations) == 1:
         face_location = face_locations[0]
         center = center_of_face(face_location)
+        corp_frame_sized = corp_preview(frame, face_location)
+        ear, blink = EAR_meas(corp_frame_sized)
     else:
         center = []
         face_location = []
+        corp_frame_sized = []
+        blink = False
 
-    reference_point = show_frame(frame, center, face_location, reference_point)  # show picture with landmarks
+    reference_point = show_frame(frame, corp_frame_sized, center, face_location, reference_point,
+                                 blink)  # show picture with landmarks
 
     return center, face_location, reference_point
 
@@ -44,7 +49,7 @@ def face_corp(position, frame):
     return crop_img
 
 
-def show_frame(frame, center_face_position, face_position, reference_point):
+def show_frame(frame, corp_frame_sized, center_face_position, face_position, reference_point, blink):
     if len(face_position) != 0:
         if len(reference_point) == 0:
             # Use first face frame as reference
@@ -58,27 +63,15 @@ def show_frame(frame, center_face_position, face_position, reference_point):
         edited_frame = draw_lines(edited_frame, reference_point, center_face_position)  # draw all lines
         edited_frame = draw_rect(edited_frame, face_position)  # mark face
 
-        # preview of face - do corp of face from frame & resize it
-        corp_frame = face_corp(face_position, frame)  # corp face boundary
-        corp_height, corp_width = tuple(corp_frame.shape[1::-1])
-        preview_height = 180  # fix preview window height
-        preview_downscale = preview_height / corp_height  # downscaling factor
-        corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  # resizing
-        # do EAR measuring rutine
-        EAR, blink, lblink, rblink = EAR_meas(corp_frame_sized)
         # combine two frames - main preview & face preview
         comp_frame = corner_matrix_combine(edited_frame, corp_frame_sized)
         # text about blink state
-        if blink == True:
-            blinkStr = '!BOOTH!'
-        elif lblink == True:
-            blinkStr = 'LEFT'
-        elif rblink == True:
-            blinkStr = 'RIGHT'
+        if blink:
+            blink_str = '!CLICK!'
         else:
-            blinkStr = ''
+            blink_str = ''
 
-        cv2.putText(comp_frame, blinkStr, (10, 30),
+        cv2.putText(comp_frame, blink_str, (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
         # Display the resulting frame
@@ -93,3 +86,13 @@ def corner_matrix_combine(matA, matB):
     # Use right bottom corner
     matA[len(matA) - len(matB):len(matA), len(matA[0]) - len(matB[0]):len(matA[0]), ::] = matB
     return matA
+
+
+def corp_preview(frame, face_position):
+    # preview of face - do corp of face from frame & resize it
+    corp_frame = face_corp(face_position, frame)  # corp face boundary
+    corp_height, corp_width = tuple(corp_frame.shape[1::-1])
+    preview_height = 180  # fix preview window height
+    preview_downscale = preview_height / corp_height  # downscaling factor
+    corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  # resizing
+    return corp_frame_sized
