@@ -99,11 +99,11 @@ if __name__ == '__main__':
                 if mouse_enable:
                     mouse_enable = False
                     thread_mouse.cancel()
-                    print('[STATE] Mouse move ENABLED')
+                    print('[STATE] Mouse move DISABLED')
                 else:
                     mouse_enable = True
                     thread_mouse.start()
-                    print('[STATE] Mouse move DISABLED')
+                    print('[STATE] Mouse move ENABLED')
 
     # Release handle to the webcam
     thread_mouse.cancel()
