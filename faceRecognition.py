@@ -1,20 +1,23 @@
 from scipy.spatial import distance as dist
 from imutils import face_utils
-import imutils
 import dlib
 import cv2
 
 
-# todo rename this func, budeme mu říkat třeba aleš
-def EAR_meas(frame):
-    '''
-    From imput frame detect eyes landmarks, then compute eye-aspect-ratio
-    Treshold EAR for closed eyes = 0.25
+def find_faces(frame):
+    """
+    At input frame detects faces and take location of each landmark
+        Than compute center of face (landmark #31),
+        detect eyes landmarks, then compute eye-aspect-ratio (closing eyes sensing)
+
+    Threshold EAR for closed eyes = 0.22
     EAR is computed as average EAR of each eye
-    :return: EAR = float, blink = Boolean
-    '''
-    # Lower EAR than EAR_treshold means that eyes are closed
-    EAR_treshold = 0.22
+
+    :return: avg_ear = float, blink = Boolean, nose_pos = tuple(1x2)
+    """
+
+    # Lower EAR than EAR_threshold means that eyes are closed
+    ear_treshold = 0.22
 
     # check if inited, if not init
     if not ('detector' in globals()):
@@ -24,7 +27,7 @@ def EAR_meas(frame):
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
     # resize for faster code
-    rame = imutils.resize(frame, width=450)
+    # frame = imutils.resize(frame, width=450) # todo.. was this commented? :O?!?
 
     # transfer to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -35,7 +38,7 @@ def EAR_meas(frame):
     # right eye, respectively
     (lStart, lEnd) = [42, 48]
     (rStart, rEnd) = [36, 42]
-    nose_landmark = 31  # index of root of nose (ceter of face)
+    nose_landmark = 31  # index of root of nose (center of face)
 
     # init output variables
     avg_ear = 1
@@ -43,48 +46,57 @@ def EAR_meas(frame):
     nose_pos = []
     # loop over the face detections
     for rect in rects:
-        # determine the facial landmarks for the face region, then
-        # convert the facial landmark (x, y)-coordinates to a NumPy
-        # array
+        # determine the facial landmarks in the face
         shape = predictor(gray, rect)
-        shape = face_utils.shape_to_np(shape)
-
+        shape = face_utils.shape_to_np(shape)  # convert to NumPy array
+        
+        # get coordinates for nose landmark
+        nose_pos = shape[nose_landmark] 
         # extract the left and right eye coordinates, then use the
         # coordinates to compute the eye aspect ratio for both eyes
-        nose_pos = []
-        nose_pos = shape[nose_landmark]
-        leftEye = shape[lStart:lEnd]
-        rightEye = shape[rStart:rEnd]
-        leftEAR = eye_aspect_ratio(leftEye)
-        rightEAR = eye_aspect_ratio(rightEye)
+        left_eye = shape[lStart:lEnd]
+        right_eye = shape[rStart:rEnd]
+        left_ear = eye_aspect_ratio(left_eye)
+        right_ear = eye_aspect_ratio(right_eye)
 
-        # average the eye aspect ratio together for both eyes
-        avg_ear = (leftEAR + rightEAR) / 2.0
+        # average EAR for booth eyes
+        avg_ear = (left_ear + right_ear) / 2.0
 
-        # check to see if the eye aspect ratio is below the blink
-        # threshold, and if so, increment the blink frame counter
-
-        if avg_ear < EAR_treshold:
+        if avg_ear < ear_treshold:
             # Blink detected
             blink = True
         else:
             # Opened eyes
             blink = False
-
     return avg_ear, blink, nose_pos
 
 
 def ear_init():
+    """
+    Initialization of predictor and detector.
+    Need to be init before start to prevent lag.
+    :return: NONE
+    """
+
+    # make detector and predictor as global
+    # so could not be init. every cycle
     global detector
     global predictor
+    # print info message
     print("[STATE] Detector, predictor init.")
+    # init face detector
     detector = dlib.get_frontal_face_detector()
+    # init shape predictor
+    # uses pre-learned faces database with landmarks
     predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
 
 def eye_aspect_ratio(eye):
-    # compute the euclidean distances between the two sets of
-    # vertical eye landmarks (x, y)-coordinates
+    """
+    compute the euclidean distances between the two sets of
+    vertical eye landmarks (x, y)-coordinates
+    """
+
     A = dist.euclidean(eye[1], eye[5])
     B = dist.euclidean(eye[2], eye[4])
 

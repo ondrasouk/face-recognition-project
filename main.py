@@ -1,13 +1,12 @@
 import cv2
 from face_detect import face_detect
-import dlib
 from mouse_move import mouse_move
-from EAR_measure import ear_init
+from faceRecognition import ear_init
 import pyautogui
 import threading
 import time
 
-# replace 60 with target refreshrate (my monitor runs at 60fps)
+# replace 60 with target refresh-rate (my monitor runs at 60fps)
 MOUSE_MOVE_SLEEP = 1/60
 
 
@@ -84,7 +83,7 @@ if __name__ == '__main__':
         # Mirror webcam
         frame = cv2.flip(frame, 1)
         # Detecting face position
-        center_face_position, face_position, reference_point, blink = face_detect(frame, reference_point)
+        center_face_position, reference_point, blink = face_detect(frame, reference_point)
 
         if blink:
             if t_blink == 0:
