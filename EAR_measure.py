@@ -22,14 +22,8 @@ def EAR_meas(frame):
         print("[STATE] Detector, predictor init while  running")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
-
-    frame = imutils.resize(frame, width=450)  # TODO resize correction
-    # this is provizor, i know.. nechce mi stim ted s**t,
-    # Check table:
-    #   Dinner
-    #   TEA
-    #   good  music
-    #   ...and   than could  do  it. :)
+    # resize for faster code
+    frame = imutils.resize(frame, width=120)
 
     # transfer to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
