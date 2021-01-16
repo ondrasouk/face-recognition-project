@@ -13,8 +13,7 @@ def EAR_meas(frame):
     :return: EAR = float, blink = Boolean
     '''
     # Lower EAR than EAR_treshold means that eyes are closed
-    EAR_treshold = 0.20
-    separe_EAR_treshold = 0.195
+    EAR_treshold = 0.22
 
     # check if inited, if not init
     if not ('detector' in globals()):
@@ -61,33 +60,14 @@ def EAR_meas(frame):
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
 
-        #booth eyes blink sense
         if avg_ear < EAR_treshold:
             # Blink detected
             blink = True
         else:
             # Opened eyes
             blink = False
-
-        # left eye blink sense
-        if leftEAR < separe_EAR_treshold:
-            # Blink detected
-            lblink = True
-        else:
-            # Opened eyes
-            lblink = False
-
-        # right eye blink sense
-        if rightEAR < separe_EAR_treshold:
-            # Blink detected
-            rblink = True
-        else:
-            # Opened eyes
-            rblink = False
-
-        print('lEAR',leftEAR,'rEAR',rightEAR,blink, lblink,rblink, avg_ear)
-
-    return avg_ear, blink, lblink, rblink
+            # for later use (right click, click and hold...)
+    return avg_ear, blink
 
 
 def ear_init():
