@@ -4,7 +4,7 @@
 
 Prerequisities: webcam, python 3, virtualenv and pip
 
-Python depencies: opencv-python, face-recognition, pyautogui
+Python depencies: opencv-python, imutils, pyautogui, scipy
 
 Create and activate virtual enviroment (for GNU/Linux):
 
@@ -23,7 +23,7 @@ env\Scripts\activate.bat
 Install pip packages:
 
 ```
-pip install opencv-python face-recognition pyautogui imutils scipy
+pip install opencv-python pyautogui imutils scipy
 ```
 
 Clone repository and run the project:
@@ -34,8 +34,7 @@ cd face-recognition-project
 python main.py
 ```
 
-Control via keyboard:
-```
-Q - Quit script
-R - New reference point
+## Control via keyboard:
+Q - Quit script  
+R - New reference point  
 E - Enable/disable mouse movements
