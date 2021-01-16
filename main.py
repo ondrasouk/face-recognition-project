@@ -10,6 +10,7 @@ import time
 MOUSE_MOVE_SLEEP = 1/60
 
 
+# Repeating function in another thread for mouse_move
 class PerpetualTimer:
 
     def __init__(self, seconds, target):
@@ -50,8 +51,9 @@ if __name__ == '__main__':
     reference_point = []
     face_position = []
     left_b = False
+    blink = False
+    blink_prev = [False, False]
     t_blink = 0
-    n_false_blink = 0
 
     def mouse_move_wrap():
         mouse_move(reference_point, center_face_position, face_position, cam_dim, thread_mouse.seconds)
@@ -83,25 +85,24 @@ if __name__ == '__main__':
         # Mirror webcam
         frame = cv2.flip(frame, 1)
         # Detecting face position
+        blink_prev[1] = blink_prev[0]
+        blink_prev[0] = blink
         center_face_position, reference_point, blink = face_detect(frame, reference_point)
-
-        if blink:
+        print(blink, blink_prev)
+        if blink or blink_prev[0]:
             if t_blink == 0:
                 t_blink = time.time()
-            if (time.time() - t_blink) > 0.1:
-                pyautogui.mouseDown()
-                left_b = True
-                n_false_blink = 0
-                if (time.time() - t_blink) > 0.3:
-                    n_false_blink = -20
-        else:
-            n_false_blink += 1
-            if n_false_blink > 3:
-                t_blink = 0
-                n_false_blink = 0
-                if left_b:
-                    pyautogui.mouseUp()
-                    left_b = False
+            if (time.time() - t_blink) > 0.3:
+                if not(left_b):
+                    print("[INFO] Left mouse button PRESSED")
+                    pyautogui.mouseDown()
+                    left_b = True
+        if not(blink or blink_prev[0] or blink_prev[1]):
+            t_blink = 0
+            if left_b:
+                print("[INFO] Left mouse button RELEASED")
+                pyautogui.mouseUp()
+                left_b = False
 
         # Keystroke detect:
         k = cv2.waitKey(1)
