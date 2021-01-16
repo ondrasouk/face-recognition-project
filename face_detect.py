@@ -3,7 +3,14 @@ from faceRecognition import find_faces
 from draw_tool import draw_point, draw_circle
 
 
-def face_detect(frame, reference_point): #todo popoisek
+def face_detect(frame, reference_point):
+    """
+    Detect faces in frame, detect blinking.
+    Declare coordinates of face.
+
+    :return: face_coordinates = tuple(x,y), reference_point = tuple(x,y), blink = Boolean
+    """
+
     # color model swap
     rgb_frame = frame[:, :, ::-1]
     # detect faces in frame
@@ -15,12 +22,19 @@ def face_detect(frame, reference_point): #todo popoisek
     return face_coordinates, reference_point, blink
 
 
-def show_frame(frame, center_face_position, reference_point, blink): #todo popoisek
+def show_frame(frame, center_face_position, reference_point, blink):
+    """
+    Mark all markers to frame and show it in window
+    :return: reference point
+    """
+
+    # check if any face is detected
     if len(center_face_position) != 0:
+        # if there is no defined reference point
         if len(reference_point) == 0:
-            # Use first face frame as reference
+            # Use first face position as reference
             reference_point = center_face_position
-            print("[STATE] Reference set as:", reference_point)
+            print("[STATE] First reference set as:", reference_point)
 
         # Marking in frame
         edited_frame = frame.copy()  # break link between edited_frame and frame

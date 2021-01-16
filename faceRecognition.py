@@ -6,7 +6,7 @@ import cv2
 
 def find_faces(frame):
     """
-    At input frame detects faces and take location of each landmark
+    Algorithm detecting faces and take location of each landmark
         Than compute center of face (landmark #31),
         detect eyes landmarks, then compute eye-aspect-ratio (closing eyes sensing)
 
@@ -26,8 +26,10 @@ def find_faces(frame):
         print("[STATE] Detector, predictor init while  running")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
     # resize for faster code
-    # frame = imutils.resize(frame, width=450) # todo.. was this commented? :O?!?
+    # for webcam you can use full size resolution
+    # frame = imutils.resize(frame, width=450)
 
     # transfer to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
