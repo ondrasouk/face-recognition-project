@@ -52,8 +52,8 @@ def show_frame(frame, center_face_position, face_position, reference_point):
             print("[State] Reference set as:", reference_point)
 
         # Marking in frame
-        edited_frame = frame.copy() # break link between edited_frame and frame
-        edited_frame = draw_point(edited_frame, center_face_position, 0) # mark face center point
+        edited_frame = frame.copy()  # break link between edited_frame and frame
+        edited_frame = draw_point(edited_frame, center_face_position, 0)  # mark face center point
         edited_frame = draw_point(edited_frame, reference_point, 1)  # mark face center point
         edited_frame = draw_lines(edited_frame, reference_point, center_face_position)  # draw all lines
         edited_frame = draw_rect(edited_frame, face_position)  # mark face
@@ -65,12 +65,16 @@ def show_frame(frame, center_face_position, face_position, reference_point):
         preview_downscale = preview_height / corp_height  # downscaling factor
         corp_frame_sized = cv2.resize(corp_frame, (0, 0), fx=preview_downscale, fy=preview_downscale)  # resizing
         # do EAR measuring rutine
-        EAR, blink = EAR_meas(corp_frame_sized)
+        EAR, blink, lblink, rblink = EAR_meas(corp_frame_sized)
         # combine two frames - main preview & face preview
         comp_frame = corner_matrix_combine(edited_frame, corp_frame_sized)
         # text about blink state
         if blink == True:
-            blinkStr = '!CLICK!'
+            blinkStr = '!BOOTH!'
+        elif lblink == True:
+            blinkStr = 'LEFT'
+        elif rblink == True:
+            blinkStr = 'RIGHT'
         else:
             blinkStr = ''
 
@@ -87,5 +91,5 @@ def show_frame(frame, center_face_position, face_position, reference_point):
 def corner_matrix_combine(matA, matB):
     # Take matrix A and to its corned place matB
     # Use right bottom corner
-    matA[len(matA)-len(matB):len(matA), len(matA[0])-len(matB[0]):len(matA[0]), ::] = matB
+    matA[len(matA) - len(matB):len(matA), len(matA[0]) - len(matB[0]):len(matA[0]), ::] = matB
     return matA
