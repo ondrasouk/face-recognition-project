@@ -50,6 +50,9 @@ if __name__ == '__main__':
     center_face_position = []
     reference_point = []
     face_position = []
+    left_b = False
+    t_blink = 0
+    n_false_blink = 0
 
     def mouse_move_wrap():
         mouse_move(reference_point, center_face_position, face_position, cam_dim, thread_mouse.seconds)
@@ -81,7 +84,25 @@ if __name__ == '__main__':
         # Mirror webcam
         frame = cv2.flip(frame, 1)
         # Detecting face position
-        center_face_position, face_position, reference_point = face_detect(frame, reference_point)
+        center_face_position, face_position, reference_point, blink = face_detect(frame, reference_point)
+
+        if blink:
+            if t_blink == 0:
+                t_blink = time.time()
+            if (time.time() - t_blink) > 0.1:
+                pyautogui.mouseDown()
+                left_b = True
+                n_false_blink = 0
+                if (time.time() - t_blink) > 0.3:
+                    n_false_blink = -20
+        else:
+            n_false_blink += 1
+            if n_false_blink > 3:
+                t_blink = 0
+                n_false_blink = 0
+                if left_b:
+                    pyautogui.mouseUp()
+                    left_b = False
 
         # Keystroke detect:
         k = cv2.waitKey(1)

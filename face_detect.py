@@ -26,10 +26,9 @@ def face_detect(frame, reference_point):
         corp_frame_sized = []
         blink = False
 
-    reference_point = show_frame(frame, center, reference_point,
-                                 blink)  # show picture with landmarks
+    reference_point = show_frame(frame, center, reference_point, blink)  # show picture with landmarks
 
-    return center, face_location, reference_point
+    return center, face_location, reference_point, blink
 
 
 def center_of_face(position):
