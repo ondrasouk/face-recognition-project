@@ -56,7 +56,7 @@ if __name__ == '__main__':
     t_blink = 0
 
     def mouse_move_wrap():
-        mouse_move(reference_point, center_face_position, face_position, cam_dim, thread_mouse.seconds)
+        mouse_move(reference_point, center_face_position)
 
     cam = cv2.VideoCapture(0)
     global cam_dim
@@ -84,11 +84,13 @@ if __name__ == '__main__':
         ret, frame = cam.read()
         # Mirror webcam
         frame = cv2.flip(frame, 1)
-        # Detecting face position
+
         blink_prev[1] = blink_prev[0]
         blink_prev[0] = blink
+        # proces frame
         center_face_position, reference_point, blink = face_detect(frame, reference_point)
-        print(blink, blink_prev)
+
+        # mouse click
         if blink or blink_prev[0]:
             if t_blink == 0:
                 t_blink = time.time()
