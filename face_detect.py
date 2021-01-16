@@ -57,7 +57,8 @@ def show_frame(frame, center_face_position, reference_point, blink):
         edited_frame = frame.copy()  # break link between edited_frame and frame
         edited_frame = draw_point(edited_frame, center_face_position, 0)  # mark face center point
         edited_frame = draw_point(edited_frame, reference_point, 1)  # mark face center point
-        # todo  draw lines  # draw all lines
+        # todo  draw lines, still solving problem.. so its commented
+        # edited_frame = draw_lines(edited_frame, reference_point, center_face_position)
         edited_frame = draw_circle(edited_frame, center_face_position, 100)
 
         # combine two frames - main preview & face preview

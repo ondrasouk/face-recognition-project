@@ -19,19 +19,22 @@ def draw_point(frame, center, colorKey):
 
 def draw_lines(frame, reference_point, center_face_position):
     # connect line
-    frame = cv2.line(frame, reference_point, tuple(center_face_position), (0, 255, 255), 1)
-    # x,y deviation  line
-    x, y = reference_point
-    xDev = center_face_position[0] - reference_point[0]  # x deviation
-    yDev = center_face_position[1] - reference_point[1]  # y deviation
-    xLinePoint = xDev + x
-    yLinePoint = yDev + y
-    frame = cv2.line(frame, reference_point, (xLinePoint, y), (0, 255, 0), 2)  # x dev. line
-    frame = cv2.line(frame, reference_point, (x, yLinePoint), (0, 255, 0), 2)  # y dev. line
-    # mouse_move(xDev,yDev,0.01)
-
+    center_face_position = list(center_face_position)
+    frame = cv2.line(frame, reference_point, (center_face_position[0],center_face_position[1]), (0, 255, 255), 1)
+    # **UNCOMMENT** for printing of deviation lines in x/y directions
+    # # x,y deviation  line
+    # x, y = reference_point
+    # xDev = center_face_position[0] - reference_point[0]  # x deviation
+    # yDev = center_face_position[1] - reference_point[1]  # y deviation
+    # xLinePoint = xDev + x
+    # yLinePoint = yDev + y
+    # frame = cv2.line(frame, reference_point, (xLinePoint, y), (0, 255, 0), 2)  # x dev. line
+    # frame = cv2.line(frame, reference_point, (x, yLinePoint), (0, 255, 0), 2)  # y dev. line
+    # **UNCOMMENT_END**
     return frame
+
+
 def draw_circle(frame, center_coordinates, radius):
     center_coordinates = tuple(center_coordinates)
-    frame = cv2.circle(frame, center_coordinates, radius, (0,0,255), 1)
+    frame = cv2.circle(frame, center_coordinates, radius, (0, 0, 255), 1)
     return frame
