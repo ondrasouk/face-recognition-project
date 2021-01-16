@@ -33,3 +33,9 @@ git clone https://github.com/ondrasouk/face-recognition-project
 cd face-recognition-project
 python main.py
 ```
+
+Control via keyboard:
+```
+Q - Quit script
+R - New reference point
+E - Enable/disable mouse movements

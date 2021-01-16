@@ -68,15 +68,20 @@ if __name__ == '__main__':
     ear_init()
 
     thread_mouse = PerpetualTimer(MOUSE_MOVE_SLEEP, mouse_move_wrap)
-    thread_mouse.start()
+    # **UNCOMMENT** for enable mouse at  the beginning
+    # thread_mouse.start()
+    print('[INFO] Press E for mouse enable')
+
+    # Control of mouse is disabled  at the  beginning
+    mouse_enable = False
 
     while True:
         # Capturing images
         ret, frame = cam.read()
         # Mirror webcam
         frame = cv2.flip(frame, 1)
-        # Detecting
-        center_face_position, face_position, reference_point = face_detect(frame, reference_point)  # detect face position
+        # Detecting face position
+        center_face_position, face_position, reference_point = face_detect(frame, reference_point)
 
         # Keystroke detect:
         k = cv2.waitKey(1)
@@ -89,6 +94,16 @@ if __name__ == '__main__':
                 if len(center_face_position) != 0:
                     reference_point = center_face_position
                     print("[STATE] Reference set as:", reference_point)
+            # toogle mouse control enable on "E"
+            if k == ord('e'):
+                if mouse_enable:
+                    mouse_enable = False
+                    thread_mouse.cancel()
+                    print('[STATE] Mouse move ENABLED')
+                else:
+                    mouse_enable = True
+                    thread_mouse.start()
+                    print('[STATE] Mouse move DISABLED')
 
     # Release handle to the webcam
     thread_mouse.cancel()

@@ -13,13 +13,13 @@ def draw_rect(frame, position):
 def draw_point(frame, center, colorKey):
     color = {0: (255, 255, 255),
              1: (255, 255, 0)}
-    cv2.circle(frame, center, 1, color[colorKey], 3)
+    cv2.circle(frame, tuple(center), 1, color[colorKey], 3)
     return frame
 
 
 def draw_lines(frame, reference_point, center_face_position):
     # connect line
-    frame = cv2.line(frame, reference_point, center_face_position, (0, 255, 255), 1)
+    frame = cv2.line(frame, reference_point, tuple(center_face_position), (0, 255, 255), 1)
     # x,y deviation  line
     x, y = reference_point
     xDev = center_face_position[0] - reference_point[0]  # x deviation
@@ -30,4 +30,8 @@ def draw_lines(frame, reference_point, center_face_position):
     frame = cv2.line(frame, reference_point, (x, yLinePoint), (0, 255, 0), 2)  # y dev. line
     # mouse_move(xDev,yDev,0.01)
 
+    return frame
+def draw_circle(frame, center_coordinates, radius):
+    center_coordinates = tuple(center_coordinates)
+    frame = cv2.circle(frame, center_coordinates, radius, (0,0,255), 1)
     return frame

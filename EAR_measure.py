@@ -5,6 +5,7 @@ import dlib
 import cv2
 
 
+# todo rename this func, budeme mu říkat třeba aleš
 def EAR_meas(frame):
     '''
     From imput frame detect eyes landmarks, then compute eye-aspect-ratio
@@ -23,7 +24,7 @@ def EAR_meas(frame):
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
     # resize for faster code
-    frame = imutils.resize(frame, width=120)
+    rame = imutils.resize(frame, width=450)
 
     # transfer to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -34,11 +35,12 @@ def EAR_meas(frame):
     # right eye, respectively
     (lStart, lEnd) = [42, 48]
     (rStart, rEnd) = [36, 42]
-    # TODO maybe can use nose landmak  for  mouse movements
+    nose_landmark = 31  # index of root of nose (ceter of face)
 
-    # init outtput variables
+    # init output variables
     avg_ear = 1
     blink = False
+    nose_pos = []
     # loop over the face detections
     for rect in rects:
         # determine the facial landmarks for the face region, then
@@ -49,6 +51,8 @@ def EAR_meas(frame):
 
         # extract the left and right eye coordinates, then use the
         # coordinates to compute the eye aspect ratio for both eyes
+        nose_pos = []
+        nose_pos = shape[nose_landmark]
         leftEye = shape[lStart:lEnd]
         rightEye = shape[rStart:rEnd]
         leftEAR = eye_aspect_ratio(leftEye)
@@ -66,8 +70,8 @@ def EAR_meas(frame):
         else:
             # Opened eyes
             blink = False
-            # for later use (right click, click and hold...)
-    return avg_ear, blink
+
+    return avg_ear, blink, nose_pos
 
 
 def ear_init():
