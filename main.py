@@ -93,7 +93,7 @@ if __name__ == '__main__':
         if blink or blink_prev[0]:
             if t_blink == 0:
                 t_blink = time.time()
-            if (time.time() - t_blink) > 0.2:
+            if (time.time() - t_blink) > 0.3:
                 if not(left_b):
                     print("[INFO] Left mouse button PRESSED")
                     pyautogui.mouseDown()
