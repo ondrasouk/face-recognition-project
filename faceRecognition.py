@@ -7,7 +7,7 @@ import cv2
 def find_faces(frame):
     """
     Algorithm detecting faces and take location of each landmark
-        Than compute center of face (landmark #31),
+        Than compute center of face (landmark #30),
         detect eyes landmarks, then compute eye-aspect-ratio (closing eyes sensing)
 
     Threshold EAR for closed eyes = 0.22
@@ -23,7 +23,7 @@ def find_faces(frame):
     if not ('detector' in globals()):
         global detector
         global predictor
-        print("[STATE] Detector, predictor init while  running")
+        print("[STATE] Detector, predictor initialized while  running")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
@@ -40,7 +40,7 @@ def find_faces(frame):
     # right eye, respectively
     (lStart, lEnd) = [42, 48]
     (rStart, rEnd) = [36, 42]
-    nose_landmark = 31  # index of root of nose (center of face)
+    nose_landmark = 30  # index of root of nose (center of face)
 
     # init output variables
     avg_ear = 1
@@ -61,7 +61,7 @@ def find_faces(frame):
         left_ear = eye_aspect_ratio(left_eye)
         right_ear = eye_aspect_ratio(right_eye)
 
-        # average EAR for booth eyes
+        # average EAR for both eyes
         avg_ear = (left_ear + right_ear) / 2.0
 
         if avg_ear < ear_treshold:
@@ -81,11 +81,11 @@ def ear_init():
     """
 
     # make detector and predictor as global
-    # so could not be init. every cycle
+    # so could not be initialized every cycle
     global detector
     global predictor
     # print info message
-    print("[STATE] Detector, predictor init.")
+    print("[STATE] Detector, predictor initialized.")
     # init face detector
     detector = dlib.get_frontal_face_detector()
     # init shape predictor

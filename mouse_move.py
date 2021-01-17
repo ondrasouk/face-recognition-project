@@ -9,12 +9,16 @@ SCALE = 0.5
 # when none face is detected continue movement for n seconds
 TIME_TO_STOP = 0.5
 
-
+"""
+Set mouse position from actual position of cursor. 
+Move the cursor from previous position according to difference 
+of center face position and reference point.
+"""
 def mouse_move(reference_point, center_face_position):
     # to remember last move
     global mov_x
     global mov_y
-    # inicialise mouse position from actual mouse position
+    # initialize mouse position from actual mouse position
     if not('mouse_x' in globals()):
         global mouse_x
         global mouse_y
@@ -62,7 +66,10 @@ def mouse_move(reference_point, center_face_position):
         mov_y = 0.0
     return
 
-
+"""
+Move the cursor from coordinates mouse_x, mouse_y (actual position of cursor)
+by the distance x,y (input).
+"""
 def move(x, y):
     global mouse_x
     global mouse_y

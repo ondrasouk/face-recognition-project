@@ -2,11 +2,11 @@
 
 ## Instalation
 
-Prerequisities: webcam, python 3, virtualenv and pip
+Prerequisites: webcam, python 3, virtualenv and pip
 
-Python depencies: opencv-python, imutils, pyautogui, scipy
+Python dependencies: opencv-python, imutils, pyautogui, scipy
 
-Create and activate virtual enviroment (for GNU/Linux):
+Create and activate virtual environment (for GNU/Linux):
 
 ```
 virtualenv ./env

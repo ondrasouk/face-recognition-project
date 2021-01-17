@@ -76,7 +76,7 @@ if __name__ == '__main__':
     # thread_mouse.start()
     print('[INFO] Press E for mouse enable')
 
-    # Control of mouse is disabled  at the  beginning
+    # Control of mouse is disabled at the beginning
     mouse_enable = False
 
     while True:
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                 if len(center_face_position) != 0:
                     reference_point = center_face_position
                     print("[STATE] Reference set as:", reference_point)
-            # toogle mouse control enable on "E"
+            # toggle mouse control enable on "E"
             if k == ord('e'):
                 if mouse_enable:
                     mouse_enable = False
