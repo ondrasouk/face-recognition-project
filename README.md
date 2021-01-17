@@ -1,4 +1,10 @@
 # face-recognition-project
+Program allows you to control the cursor with moving your head
+and blinking.  
+
+The project was created by Ondřej Soukeník, Pavel Vaněk 
+and Zdeňka Varmužová as the final project in Computer programming 2.
+
 
 ## Installation
 
