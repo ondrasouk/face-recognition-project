@@ -77,7 +77,7 @@ if __name__ == '__main__':
     print('[INFO] Press E for mouse enable')
 
     # Control of mouse is disabled at the beginning
-    mouse_enable = False
+    mouse_enabled = False
 
     while True:
         # Capturing images
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         center_face_position, reference_point, blink = face_detect(frame, reference_point)
 
         # mouse click
-        if blink or blink_prev[0]:
+        if mouse_enabled and (blink or blink_prev[0]):
             if t_blink == 0:
                 t_blink = time.time()
             if (time.time() - t_blink) > 0.3:
@@ -99,7 +99,7 @@ if __name__ == '__main__':
                     print("[INFO] Left mouse button PRESSED")
                     pyautogui.mouseDown()
                     left_b = True
-        if not(blink or blink_prev[0] or blink_prev[1]):
+        if mouse_enabled and not(blink or blink_prev[0] or blink_prev[1]):
             t_blink = 0
             if left_b:
                 print("[INFO] Left mouse button RELEASED")
@@ -119,14 +119,14 @@ if __name__ == '__main__':
                     print("[STATE] Reference set as:", reference_point)
             # toggle mouse control enable on "E"
             if k == ord('e'):
-                if mouse_enable:
-                    mouse_enable = False
+                if mouse_enabled:
+                    mouse_enabled = False
                     thread_mouse.cancel()
-                    print('[STATE] Mouse move DISABLED')
+                    print('[STATE] Mouse control DISABLED')
                 else:
-                    mouse_enable = True
+                    mouse_enabled = True
                     thread_mouse.start()
-                    print('[STATE] Mouse move ENABLED')
+                    print('[STATE] Mouse control ENABLED')
 
     # Release handle to the webcam
     thread_mouse.cancel()

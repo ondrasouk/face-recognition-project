@@ -34,7 +34,7 @@ cd face-recognition-project
 python main.py
 ```
 
-## Control via keyboard:
+## Control via keyboard
 Q - Quit script  
 R - New reference point  
 E - Enable/disable mouse movements
