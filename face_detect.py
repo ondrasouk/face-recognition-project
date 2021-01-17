@@ -40,7 +40,7 @@ def show_frame(frame, center_face_position, reference_point, blink):
         # Marking in frame
         edited_frame = frame.copy()  # break link between edited_frame and frame
         edited_frame = draw_point(edited_frame, center_face_position, 0)     # mark face center point
-        edited_frame = draw_point(edited_frame, reference_point, 1)          # mark face center point
+        edited_frame = draw_point(edited_frame, reference_point, 1)          # mark reference point
         edited_frame = draw_circle(edited_frame, center_face_position, 100)  # draw circle around face
 
         # text about blink state
