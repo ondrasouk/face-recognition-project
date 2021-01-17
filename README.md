@@ -3,8 +3,9 @@ Program allows you to control the cursor with moving your head
 and blinking.  
 
 The project was created by Ondřej Soukeník, Pavel Vaněk 
-and Zdeňka Varmužová as the final project in Computer programming 2.
+and Zdeňka Varmužová as the final project in Computer programming 2 2020/2021.
 
+Developed and tested on Windows, Mac OS and GNU/Linux with X server.
 
 ## Installation
 
