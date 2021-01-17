@@ -10,8 +10,8 @@ SCALE = 0.5
 TIME_TO_STOP = 0.5
 
 """
-Set mouse position from actual position of cursor. 
-Move the cursor from previous position according to difference 
+Set mouse position from actual position of cursor.
+Move the cursor from previous position according to difference
 of center face position and reference point.
 """
 def mouse_move(reference_point, center_face_position):
@@ -65,6 +65,7 @@ def mouse_move(reference_point, center_face_position):
         mov_x = 0.0
         mov_y = 0.0
     return
+
 
 """
 Move the cursor from coordinates mouse_x, mouse_y (actual position of cursor)

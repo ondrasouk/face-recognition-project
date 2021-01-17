@@ -16,7 +16,8 @@ def face_detect(frame, reference_point):
     # detect faces in frame
     ear, blink, face_coordinates = find_faces(rgb_frame)
     # assign variables if face is not detected
-    if len(face_coordinates) < 1:  blink = False
+    if len(face_coordinates) < 1:
+        blink = False
     # show picture with landmarks
     reference_point = show_frame(frame, face_coordinates, reference_point, blink)
     return face_coordinates, reference_point, blink

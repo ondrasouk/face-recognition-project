@@ -51,7 +51,7 @@ def find_faces(frame):
         # determine the facial landmarks in the face
         shape = predictor(gray, rect)
         shape = face_utils.shape_to_np(shape)  # convert to NumPy array
-        
+
         # get coordinates for nose landmark
         nose_pos = shape[nose_landmark] 
         # extract the left and right eye coordinates, then use the
