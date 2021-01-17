@@ -1,6 +1,6 @@
 # face-recognition-project
 
-## Instalation
+## Installation
 
 Prerequisites: webcam, python 3, virtualenv and pip
 
